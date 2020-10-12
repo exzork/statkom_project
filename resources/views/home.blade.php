@@ -7,11 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-        <canvas id="canvas"></canvas>
+        <canvas id="frekuensi"></canvas>
         <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
         <script src="{{mix('js/app.js')}}"></script>
         <script>
-            var config = {
+            var ogive = {
                 type: 'line',
                 data: {
                     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -65,8 +65,8 @@
             };
 
             window.onload = function() {
-                var ctx = document.getElementById('canvas').getContext('2d');
-                window.myLine = new Chart(ctx, config);
+                var ctx = document.getElementById('frekuensi').getContext('2d');
+                window.myLine = new Chart(ctx, ogive);
             };
         </script>
 </body>
