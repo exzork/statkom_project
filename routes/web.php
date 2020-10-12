@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\data_surveyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('content.home');
 });
+Route::get('pengolahan',[data_surveyController::class,'index']);
