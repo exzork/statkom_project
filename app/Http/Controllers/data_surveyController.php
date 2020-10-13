@@ -111,19 +111,36 @@ class data_surveyController extends Controller
             return $count_o;
         }
     }
-    public function analisis_tunggal(){
+    public function penyajian(){
         $data_urut=$this->pengolahan("data_only");
-        $data_distinct=data_survey::select('data',DB::raw("COUNT(*) as f"))->groupBy('data')->get();
-        $frekuensi_kumulatif=0;
-        foreach ($data_distinct as $key => $value) {
-            $frekuensi_kumulatif+=$value['frek'];
-            $data_distinct[$key]['frek_k']=$frekuensi_kumulatif;
-            $data_distinct[$key]['frek_r']=$value['frek']/$this->pengolahan("count")*100;
-            $data_distinct[$key]['frek_rk']=$frekuensi_kumulatif/$this->pengolahan("count")*100;
+        $count=$this->pengolahan("count");
+        $range=max($data_urut)-min($data_urut);
+        $banyak_kelas=ceil(log($count,2)+1);
+        $range_kelas=ceil($range/$banyak_kelas);
+        $data_penyajian=[];
+        $frek_k=0;
+        for ($i=0; $i < $banyak_kelas; $i++) {
+            $temp=[];
+            $min_val=$i*$range_kelas+min($data_urut);
+            $max_val=($i+1)*$range_kelas+min($data_urut)-1;
+            foreach ($data_urut as $key => $value) {
+                if ($value>=$min_val && $value<$max_val) {
+                    array_push($temp,$value);
+                }
+            }
+            $frek_k+=count($temp);
+            $data_penyajian[$i]['jumlah']=count($temp);
+            $data_penyajian[$i]['data']=$temp;
+            $data_penyajian[$i]['min']=$min_val;
+            $data_penyajian[$i]['max']=$max_val;
+            $data_penyajian[$i]['frek_k']=$frek_k;
+            $data_penyajian[$i]['frek_r']=number_format(count($temp)/$count*100);
+            $data_penyajian[$i]['frek_rk']=number_format($frek_k/$count*100);
         }
-        echo "<pre>";
-        print_r($data_distinct);
-        echo "</pre>";
+        $data=[
+            'data_penyajian'=>$data_penyajian,
+        ];
+        return view('content.penyajian')->with($data);
     }
     /**
      * Show the form for creating a new resource.

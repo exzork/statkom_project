@@ -17,8 +17,7 @@
           <div class="list-group list-group-flush">
             <a href="/" class="list-group-item list-group-item-action bg-light">Hasil Survey</a>
             <a href="/pengolahan" class="list-group-item list-group-item-action bg-light">Pengolahan Data</a>
-            <a href="/analisis_tunggal" class="list-group-item list-group-item-action bg-light">Analisis Data Tunggal</a>
-            <a href="/analisis_kelompok" class="list-group-item list-group-item-action bg-light">Analisis Data Kelompok</a>
+            <a href="/penyajian" class="list-group-item list-group-item-action bg-light">Penyajian Data</a>
           </div>
         </div>
         <!-- /#sidebar-wrapper -->

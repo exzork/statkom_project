@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('content.home');
 });
 Route::get('pengolahan',[data_surveyController::class,'pengolahan']);
-Route::get('analisis_tunggal',[data_surveyController::class,'analisis_tunggal']);
+Route::get('penyajian',[data_surveyController::class,'penyajian']);
