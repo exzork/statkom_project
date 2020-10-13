@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\data_survey;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\Promise\all;
 
 class data_surveyController extends Controller
@@ -14,7 +14,7 @@ class data_surveyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pengolahan()
+    public function pengolahan($get=1)
     {
         $sum=0;
         $count=0;
@@ -103,7 +103,27 @@ class data_surveyController extends Controller
             'std_p'=>number_format($stdev_p,2),
             'std_s'=>number_format($stdev_s,2)
         ];
-        return view('content.pengolahan')->with($data);
+        if($get==1){
+            return view('content.pengolahan')->with($data);
+        }elseif($get=="data_only"){
+            return $data_urut_only;
+        }elseif ($get=="count") {
+            return $count_o;
+        }
+    }
+    public function analisis_tunggal(){
+        $data_urut=$this->pengolahan("data_only");
+        $data_distinct=data_survey::select('data',DB::raw("COUNT(*) as f"))->groupBy('data')->get();
+        $frekuensi_kumulatif=0;
+        foreach ($data_distinct as $key => $value) {
+            $frekuensi_kumulatif+=$value['frek'];
+            $data_distinct[$key]['frek_k']=$frekuensi_kumulatif;
+            $data_distinct[$key]['frek_r']=$value['frek']/$this->pengolahan("count")*100;
+            $data_distinct[$key]['frek_rk']=$frekuensi_kumulatif/$this->pengolahan("count")*100;
+        }
+        echo "<pre>";
+        print_r($data_distinct);
+        echo "</pre>";
     }
     /**
      * Show the form for creating a new resource.
