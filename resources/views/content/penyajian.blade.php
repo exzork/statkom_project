@@ -103,7 +103,7 @@
                 }
                 var data_ling_frek=[];
                 var label_ling_frek=[];
-                var data_penyajian={{$data_json}};
+                var data_penyajian=JSON.parse({{$data_json}});
                 $.each(data_penyajian,function(key,value){
                     data_ling_frek.push(value['frek']);
                     label_ling_frek.push(value['min']+"-"+value['max']);
