@@ -45,44 +45,70 @@
                 </div>
             </div>
             <script>
-                function colorize(opaque, hover, ctx) {
-			        var v = ctx.dataset.data[ctx.dataIndex];
-			        var c = v < -50 ? '#D60000'
-				            : v < 0 ? '#F46300'
-				            : v < 50 ? '#0358B6'
-				            : '#44DE28';
+                function calculatePoint(i, intervalSize, colorRangeInfo) {
+                    var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+                    return (useEndAsStart
+                        ? (colorEnd - (i * intervalSize))
+                        : (colorStart + (i * intervalSize)));
+                }
+                /* Must use an interpolated color scale, which has a range of [0, 1] */
+                function interpolateColors(dataLength, colorScale, colorRangeInfo) {
+                    var { colorStart, colorEnd } = colorRangeInfo;
+                    var colorRange = colorEnd - colorStart;
+                    var intervalSize = colorRange / dataLength;
+                    var i, colorPoint;
+                    var colorArray = [];
+                    for (i = 0; i < dataLength; i++) {
+                        colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
+                        colorArray.push(colorScale(colorPoint));
+                    }
+                    return colorArray;
+                }
+                /* Set up Chart.js Pie Chart */
+                function createChart(chartId, chartData, colorScale, colorRangeInfo) {
 
-			    var opacity = hover ? 1 - Math.abs(v / 150) - 0.2 : 1 - Math.abs(v / 150);
-                var alpha = opacity === undefined ? 0.5 : 1 - opacity;
-			    var op= Color(c).alpha(alpha).rgbString();
-			return opaque ? c : op;
-		}
+                    const chartElement = document.getElementById(chartId);
 
-		function hoverColorize(ctx) {
-			return colorize(false, true, ctx);
-		}
-		var data = {
-			datasets: {{$dis_frek}}
-		};
+                    const dataLength = chartData.data.length;
 
-		var options = {
-            responsive:true,
-			legend: false,
-			tooltips: false,
-			elements: {
-				arc: {
-					backgroundColor: colorize.bind(null, false, false),
-					hoverBackgroundColor: hoverColorize
-				}
-			}
-		};
+                    var COLORS = interpolateColors(dataLength, colorScale, colorRangeInfo);
 
-		var chart = new Chart('ling_frek', {
-			type: 'pie',
-			data: data,
-			options: options
-		});
 
+                    const myChart = new Chart(chartElement, {
+                        type: 'pie',
+                        data: {
+                            labels: chartData.labels,
+                            datasets: [
+                                {
+                                    backgroundColor: COLORS,
+                                    hoverBackgroundColor: COLORS,
+                                    data: chartData.data
+                                }
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            legend: {
+                                display: false,
+                            },
+                            hover: {
+                                onHover: function(e) {
+                                    var point = this.getElementAtEvent(e);
+                                    e.target.style.cursor = point.length ? 'pointer' : 'default';
+                                },
+                            },
+                        }
+                    });
+                    return myChart;
+                }
+                var data_ling_frek=[];
+                var label_ling_frek=[];
+                var data_penyajian={{$data_json}};
+                $.each(data_penyajian,function(key,value){
+                    data_ling_frek.push(value['frek']);
+                    label_ling_frek.push(value['min']+"-"+value['max']);
+                });
+                console.log(data_ling_frek);
             </script>
         </div>
     </div>

@@ -119,7 +119,6 @@ class data_surveyController extends Controller
         $range_kelas=ceil($range/$banyak_kelas);
         $data_penyajian=[];
         $frek_k=0;
-        $dis_frek=[];
         for ($i=0; $i < $banyak_kelas; $i++) {
             $temp=[];
             $min_val=$i*$range_kelas+min($data_urut);
@@ -137,11 +136,10 @@ class data_surveyController extends Controller
             $data_penyajian[$i]['frek_k']=$frek_k;
             $data_penyajian[$i]['frek_r']=number_format(count($temp)/$count*100);
             $data_penyajian[$i]['frek_rk']=number_format($frek_k/$count*100);
-            array_push($dis_frek,$frek_k);
         }
         $data=[
             'data_penyajian'=>$data_penyajian,
-            'dis_frek'=>json_encode($dis_frek)
+            'data_json'=>json_encode($data_penyajian)
         ];
         return view('content.penyajian')->with($data);
     }
