@@ -9,4 +9,7 @@ class data_survey extends Model
 {
     use HasFactory;
     public $table="data_survey";
+    protected $fillable=[
+        'data'
+    ];
 }

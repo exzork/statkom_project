@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\data_survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+
 use function GuzzleHttp\Promise\all;
 
 class data_surveyController extends Controller
@@ -57,23 +59,25 @@ class data_surveyController extends Controller
             array_push($data_urut_array,(object)$d);//memasukkan object kedalam array
             array_push($data_urut_only,$data_['data']);
         }
+
         //menghitung median
         if ($count_o%2==0) {//jika jumlah data genap maka menggunakan rumus ini
-            $median=($data_urut_array[ceil($count_o/2)-1]+$data_urut_array[ceil($count_o/2)])/2;
+            $median=($data_urut_array[ceil($count_o/2)-1]->data+$data_urut_array[ceil($count_o/2)]->data)/2;
+
         } else {//jika ganjil maka menggunakan rumus ini
-            $median=$data_urut_array[ceil($count_o/2)-1];
+            $median=$data_urut_array[ceil($count_o/2)-1]->data;
         }
         //Quartil 1
         if ((ceil($count_o/2))%2==0) {
-            $quartil1=($data_urut_array[ceil($count_o/4)-1]+$data_urut_array[ceil($count_o/4)])/2;
+            $quartil1=($data_urut_array[ceil($count_o/4)-1]->data+$data_urut_array[ceil($count_o/4)]->data)/2;
         }else{
-            $quartil1=$data_urut_array[ceil($count_o/4)-1];
+            $quartil1=$data_urut_array[ceil($count_o/4)-1]->data;
         }
         //Quartil 3
         if ((ceil($count_o/2))%2==0) {
-            $quartil3=($data_urut_array[ceil($count_o/4*3)-1]+$data_urut_array[ceil($count_o/4*3)])/2;
+            $quartil3=($data_urut_array[ceil($count_o/4*3)-1]->data+$data_urut_array[ceil($count_o/4*3)]->data)/2;
         }else{
-            $quartil3=$data_urut_array[ceil($count_o/4*3)-1];
+            $quartil3=$data_urut_array[ceil($count_o/4*3)-1]->data;
         }
         //menghitung modus
         $values_temp = array_count_values($data_urut_only);
@@ -94,10 +98,10 @@ class data_surveyController extends Controller
             'table_mentah'=>$data_mentah,
             'table_urut'=>$data_urut,
             'mean' => number_format($mean,2),//mean dengan rumus sum/count, ini merupakan mean tanpa data outlier
-            'median'=>$median->data,
+            'median'=>$median,
             'modus'=>$modus,
-            'quartil1'=>$quartil1->data,
-            'quartil3'=>$quartil3->data,
+            'quartil1'=>$quartil1,
+            'quartil3'=>$quartil3,
             'var_p'=>number_format($var_p,2),
             'var_s'=>number_format($var_s,2),
             'std_p'=>number_format($stdev_p,2),
@@ -129,17 +133,16 @@ class data_surveyController extends Controller
                 }
             }
             $frek_k+=count($temp);
-            $data_penyajian[$i]['jumlah']=count($temp);
+            $data_penyajian[$i]['frek']=count($temp);
             $data_penyajian[$i]['data']=$temp;
             $data_penyajian[$i]['min']=$min_val;
             $data_penyajian[$i]['max']=$max_val;
             $data_penyajian[$i]['frek_k']=$frek_k;
-            $data_penyajian[$i]['frek_r']=number_format(count($temp)/$count*100);
-            $data_penyajian[$i]['frek_rk']=number_format($frek_k/$count*100);
+            $data_penyajian[$i]['frek_r']=number_format(count($temp)/$count*100,2);
+            $data_penyajian[$i]['frek_rk']=number_format($frek_k/$count*100,2);
         }
         $data=[
-            'data_penyajian'=>$data_penyajian,
-            'data_json'=>json_encode($data_penyajian)
+            'data_penyajian'=>$data_penyajian
         ];
         return view('content.penyajian')->with($data);
     }
@@ -161,7 +164,11 @@ class data_surveyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'data'=>"required"
+        ]);
+        data_survey::create($request->all());
+        return Redirect::to('pengolahan')->with('success','Data berhasil ditambahkan');
     }
 
     /**
@@ -182,7 +189,7 @@ class data_surveyController extends Controller
      */
     public function edit(data_survey $data_survey)
     {
-        //
+
     }
 
     /**
@@ -194,7 +201,11 @@ class data_surveyController extends Controller
      */
     public function update(Request $request, data_survey $data_survey)
     {
-        //
+        $data=data_survey::where('id',$request->id)
+        ->update([
+            'data'=>$request->data
+        ]);
+        return Redirect::to('pengolahan')->with('success','Data berhasil di edit');
     }
 
     /**
@@ -203,8 +214,13 @@ class data_surveyController extends Controller
      * @param  \App\Models\data_survey  $data_survey
      * @return \Illuminate\Http\Response
      */
-    public function destroy(data_survey $data_survey)
+    public function destroy(Request $request,data_survey $data_survey)
     {
-        //
+
+    }
+    public function delete($id){
+        data_survey::destroy($id);
+        print_r($id);
+        return Redirect::to('pengolahan')->with('success','Data berhasil di delete');
     }
 }

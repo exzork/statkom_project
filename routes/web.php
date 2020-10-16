@@ -19,3 +19,6 @@ Route::get('/', function () {
 });
 Route::get('pengolahan',[data_surveyController::class,'pengolahan']);
 Route::get('penyajian',[data_surveyController::class,'penyajian']);
+Route::post('add_data',[data_surveyController::class,'store']);
+Route::post('edit_data',[data_surveyController::class,'update']);
+Route::post('delete_data/{id}',[data_surveyController::class,'delete']);
