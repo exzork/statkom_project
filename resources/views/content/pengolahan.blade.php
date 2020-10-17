@@ -143,7 +143,7 @@
                     <div class="w-100 input-group">
                         <input type="hidden" name="id" id="id_data" value="">
                         <input type="number" name="data" min="1" max="5000" class="form-control" placeholder="Masukkan data" id="data_edit">
-                        <button class="btn btn-primary" type="Submit">Tambahkan</button>
+                        <button class="btn btn-primary" type="Submit">Perbarui</button>
                     </div>
                 </form>
             </div>
