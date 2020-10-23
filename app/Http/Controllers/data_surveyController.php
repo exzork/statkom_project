@@ -126,7 +126,7 @@ class data_surveyController extends Controller
         for ($i=0; $i < $banyak_kelas; $i++) {
             $temp=[];
             $min_val=$i*$range_kelas+min($data_urut);
-            $max_val=($i+1)*$range_kelas+min($data_urut)-1;
+            $max_val=($i+1)*$range_kelas+min($data_urut);
             foreach ($data_urut as $key => $value) {
                 if ($value>=$min_val && $value<$max_val) {
                     array_push($temp,$value);
