@@ -45,7 +45,10 @@
                             @endphp</td>
                             <td>{{$table_data->data}}</td>
                             <td align="right">{{$table_data->z_score}}</td>
-                            <td><button class="btn btn-success fa fa-edit mr-1" onclick="update({{$table_data->id}});"></button><button class="btn btn-danger fa fa-trash" onclick="delete_data({{$table_data->id}},{{$table_data->data}});"></button></td>
+                            <td>
+                                <button class="btn btn-success fa fa-edit mr-1" onclick="update({{$table_data->id}});"></button>
+                                <button class="btn btn-danger fa fa-trash" onclick="delete_data({{$table_data->id}},{{$table_data->data}});"></button>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
