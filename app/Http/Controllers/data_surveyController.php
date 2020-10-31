@@ -42,14 +42,16 @@ class data_surveyController extends Controller
         $stdev_p_all=sqrt($var_p_all);
         foreach($data_mentah as $key => $data_){
             $data_mentah[$key]['z_score']=number_format(($data_['data']-$mean_all)/$stdev_p_all,9);//menghitung nilai z-score
-            if ($data_mentah[$key]['z_score']>3||$data_mentah[$key]['z_score']<-3) {//jika nilai z-score lebih dari 3 atau kurang dari -3 maka data tersebut adalah outlier
+            if ($data_mentah[$key]['z_score']>3||$data_mentah[$key]['z_score']<-3) {//jika nilai z-score lebih dari 3
+                //atau kurang dari -3 maka data tersebut adalah outlier
                 unset($data_urut[$key]);//menghapus data dari tabel data yang akan digunakan
             }else{
                 $count_o++;//menghitung banyak data yang tidak outlier
                 $sum_o+=$data_['data'];//menghitung jumlah data yang tidak outlier
             }
         }
-        $data_urut_array=[];//array sementara untuk menghitung median, karena data yang diambil dari database berbentuk object maka saya membuat sebuah array baru
+        $data_urut_array=[];//array sementara untuk menghitung median, karena data yang diambil
+        //dari database berbentuk object maka saya membuat sebuah array baru
         $data_urut_only=[];//array untuk menyimpan data saja, tanpa menyimpan nomor datanya. Digunakan untuk menentukan modus
         foreach ($data_urut as $key => $data_) {
             $d=[
