@@ -84,10 +84,11 @@ class data_surveyController extends Controller
         //menghitung modus
         $values_temp = array_count_values($data_urut_only);
         $modus=array_search(max($values_temp),$values_temp);
+        //menghitung mean
+        $mean=$sum_o/$count_o;
         //menghitung Varian
         $var_s=0;
         $var_p=0;
-        $mean=$sum_o/$count_o;
         foreach ($data_urut as $key => $value) {
             $var_p+=pow($value['data']-$mean,2)/$count_o;
             $var_s+=pow($value['data']-$mean,2)/($count_o-1);
