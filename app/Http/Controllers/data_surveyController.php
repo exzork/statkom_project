@@ -119,7 +119,7 @@ class data_surveyController extends Controller
         $data_urut=$this->pengolahan("data_only");
         $count=$this->pengolahan("count");
         $range=max($data_urut)-min($data_urut);
-        $banyak_kelas=ceil(log($count,2)+1);
+        $banyak_kelas=ceil(3.3*log($count,10)+1);
         $range_kelas=ceil($range/$banyak_kelas);
         $data_penyajian=[];
         $frek_k=0;
