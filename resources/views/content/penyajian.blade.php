@@ -59,7 +59,7 @@
             <div class="col-md-6 mt-1">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Diagram Lingkaran Distribusi Frekuensi Relatif</h5>
+                        <h5>Diagram Lingkaran Distribusi Frekuensi Relatif(%)</h5>
                     </div>
                     <div class="card-body">
                         <div class="wrapper">
@@ -71,7 +71,7 @@
             <div class="col-md-6 mt-1">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Diagram Lingkaran Distribusi Frekuensi Relatif Kumulatif</h5>
+                        <h5>Diagram Lingkaran Distribusi Frekuensi Relatif Kumulatif(%)</h5>
                     </div>
                     <div class="card-body">
                         <div class="wrapper">
@@ -95,7 +95,7 @@
             <div class="col-md-6 mt-1">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Diagram Ogive Distribusi Frekuensi Relatif dan Frekuensi Relatif Kumulatif</h5>
+                        <h5>Diagram Ogive Distribusi Frekuensi Relatif dan Frekuensi Relatif Kumulatif(%)</h5>
                     </div>
                     <div class="card-body">
                         <div class="wrapper">
@@ -119,7 +119,7 @@
             <div class="col-md-6 mt-1">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Diagram Histogram Distribusi Frekuensi Relatif dan Frekuensi Relatif Kumulatif</h5>
+                        <h5>Diagram Histogram Distribusi Frekuensi Relatif dan Frekuensi Relatif Kumulatif(%)</h5>
                     </div>
                     <div class="card-body">
                         <div class="wrapper">
