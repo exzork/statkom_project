@@ -26,7 +26,7 @@ class data_surveyController extends Controller
         $stdev_p_all=0;
         //ambil data dari database
         $data_mentah = data_survey::all()->keyBy("id");
-        $data_urut=data_survey::all()->sortBy("data")->keyBy("id");;
+        $data_urut=data_survey::all()->sortBy("data")->keyBy("id");
         //menjumlahkan keseluruhan data dan menghitung berapa jumlah data
         foreach($data_mentah as $data_){
             $sum+=$data_['data'];
